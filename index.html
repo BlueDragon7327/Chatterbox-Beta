@@ -18,7 +18,8 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="text/babel" src="script.js"></script>
+    <!-- For production, load the built bundle -->
+    <script src="script.min.js"></script>
     <!-- Register service worker -->
     <script>
       if ('serviceWorker' in navigator) {
