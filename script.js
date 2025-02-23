@@ -1185,4 +1185,32 @@ function App() {
     }, "Select a conversation to see profile details."))));
   }
 }
+// Add support for the install prompt (clean version)
+var deferredPrompt;
+window.addEventListener('beforeinstallprompt', function (e) {
+  e.preventDefault();
+  deferredPrompt = e;
+  var installButton = document.getElementById('install-button');
+  if (!installButton) {
+    installButton = document.createElement('button');
+    installButton.id = 'install-button';
+    installButton.textContent = 'Install App';
+    installButton.style.position = 'fixed';
+    installButton.style.bottom = '20px';
+    installButton.style.right = '20px';
+    installButton.style.padding = '0.75rem 1.5rem';
+    installButton.style.zIndex = 10000;
+    document.body.appendChild(installButton);
+    installButton.addEventListener('click', function () {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function (choice) {
+        console.log('User choice:', choice.outcome);
+        if (choice.outcome === 'accepted') {
+          installButton.style.display = 'none';
+        }
+        deferredPrompt = null;
+      });
+    });
+  }
+});
 ReactDOM.render(/*#__PURE__*/React.createElement(App, null), document.getElementById('root'));
